@@ -1,0 +1,96 @@
+---
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+import FormattedDate from "../components/FormattedDate.astro";
+import { getCollection } from "astro:content";
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h1 class="mr-2">Anshul Sharma from LNCT</h1>
+      <p>
+        Hey 👋, I’m Anshul! A college student in lakshmi narain college of
+        technology pursuing my BTech in Computer Science and Engineering.
+      </p>
+      <hr />
+
+      <ul>
+        {
+          posts.map((post) => (
+            <ul>
+              <a href={`/blog/${post.id}/`}>
+                <p class="title">{post.data.title}</p>
+              </a>
+
+              <p class="date">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M7 11h2v2H7zm0 4h2v2H7zm4-4h2v2h-2zm0 4h2v2h-2zm4-4h2v2h-2zm0 4h2v2h-2z" />
+                  <path d="M5 22h14c1.103 0 2-.897 2-2V6c0-1.103-.897-2-2-2h-2V2h-2v2H9V2H7v2H5c-1.103 0-2 .897-2 2v14c0 1.103.897 2 2 2zM19 8l.001 12H5V8h14z" />
+                </svg>
+
+                {post.data.pubDate}
+              </p>
+              <p class="description">{post.data.description}</p>
+            </ul>
+          ))
+        }
+      </ul>
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 5%;
+  }
+
+  .title {
+    padding: none;
+    margin: 0;
+    font-size: 1.75rem;
+  }
+
+  .date {
+    padding: none;
+    margin: 0;
+    font-size: 0.75rem;
+  }
+
+  .description {
+    padding: none;
+    margin: 0;
+    font-size: 1.15rem;
+  }
+
+  svg {
+    vertical-align: middle;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+</style>
